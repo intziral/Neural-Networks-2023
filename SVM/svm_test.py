@@ -6,7 +6,7 @@ import pickle
 
 # load dataset
 (X_train, y_train), (X_test, y_test) = cifar10.load_data()
-labels = ["airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"]
+labels = ["plane", "auto", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"]
 
 # flatten images and normalize rgb values to [0, 1]
 X_train, X_test = X_train.reshape(-1, 3072) / 255.0, X_test.reshape(-1, 3072) / 255.0
@@ -25,7 +25,7 @@ print("Train set size after PCA:", X_train_pca.shape)
 print("Test set size after PCA:", X_test_pca.shape)
 
 # init arrays
-models = ["Linear SVC", "Linear Kernel SVC", "RBF Kernel SVC", "Polynomial Kernel SVC"]
+models = ["Linear SVC", "Linear Kernel", "RBF 0.7", "RBF auto", "Polynomial"]
 model_train_accuracy = np.empty([len(models)])
 model_test_accuracy = np.empty([len(models)])
 
@@ -57,11 +57,12 @@ for i in range(len(models)):
     # Classification examples
     image_no = 5 # show 5 correct testing classification examples
 
-    if os.path.isfile(f"SVM/figures/model{i+1}_correct.png"):
+    if not os.path.isfile(f"SVM/figures/model{i+1}_correct.png"):
         
         fig, axes = plt.subplots(2, image_no)
         for k in range(image_no):
-            j = correct_pred[k]
+            j = np.random.choice(correct_pred, size=1, replace=False)
+            j = int(j)
             reduced_im = X_pca.inverse_transform(X_test_pca[j])
 
             # show original image
@@ -83,7 +84,8 @@ for i in range(len(models)):
 
         fig, axes = plt.subplots(2, image_no)
         for k in range(image_no):
-            j = incorrect_pred[k]
+            j = np.random.choice(incorrect_pred, size=1, replace=False)
+            j = int(j)
             reduced_im = X_pca.inverse_transform(X_test_pca[j])
 
             # show original image
@@ -102,6 +104,9 @@ for i in range(len(models)):
 
 # Accuracy plots
 if not os.path.isfile(f"SVM/figures/accuracies.png"):
+    
+    plt.figure()
+
     # Set up the bar positions
     bar_width = 0.35
     index = np.arange(len(models))

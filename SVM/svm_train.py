@@ -46,12 +46,13 @@ plt.show()
 # transform input
 X_train_pca = X_pca.transform(X_train)
 
-C = 1.0  # SVM regularization parameter
 models = [
-    svm.LinearSVC(C=C, dual="auto"),
-    svm.SVC(kernel="linear", C=C),
-    svm.SVC(kernel="rbf", gamma=0.7, C=C),
-    svm.SVC(kernel="poly", degree=3, gamma="auto", C=C),
+    svm.LinearSVC(dual="auto"),
+    svm.SVC(kernel="linear"),
+    svm.SVC(kernel="rbf", gamma=0.7),
+    svm.SVC(kernel="rbf", gamma="auto"),
+    svm.SVC(kernel="poly", degree=3, gamma="auto"),
+    
 ]
 
 # train models
@@ -61,5 +62,3 @@ models = [clf.fit(X_train_pca, y_train) for clf in models]
 for i, model in enumerate(models):
     with open(f'SVM/models/model{i+1}.pkl','wb') as f:
         pickle.dump(model, f)
-
-
