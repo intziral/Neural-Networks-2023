@@ -55,38 +55,38 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
-    # # Training the netowrk
-    # print("Starting Training")
-    # for epoch in range(epoch_num):  # loop over the dataset multiple times
+    # Training the netowrk
+    print("Starting Training")
+    for epoch in range(epoch_num):  # loop over the dataset multiple times
 
-    #     running_loss = AverageMeter()
-    #     progress_bar = tqdm(trainloader)
-    #     for i, data in enumerate(progress_bar):
-    #         # get the inputs; data is a list of [inputs, labels]
-    #         inputs, labels = data[0].to(device), data[1].to(device)
+        running_loss = AverageMeter()
+        progress_bar = tqdm(trainloader)
+        for i, data in enumerate(progress_bar):
+            # get the inputs; data is a list of [inputs, labels]
+            inputs, labels = data[0].to(device), data[1].to(device)
 
-    #         # zero the parameter gradients
-    #         optimizer.zero_grad()
+            # zero the parameter gradients
+            optimizer.zero_grad()
 
-    #         # forward + backward + optimize
-    #         outputs = net(inputs)
-    #         loss = criterion(outputs, labels)
-    #         loss.backward()
-    #         optimizer.step()
+            # forward + backward + optimize
+            outputs = net(inputs)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
 
-    #         # print statistics
-    #         running_loss.update(loss.item())
-    #         progress_bar.set_postfix({"last_loss": loss.detach().item(), "epoch_loss": running_loss.avg})
+            # print statistics
+            running_loss.update(loss.item())
+            progress_bar.set_postfix({"last_loss": loss.detach().item(), "epoch_loss": running_loss.avg})
 
-    #         # if i % 2000 == 1999:    # print every 2000 mini-batches
-    #         #     print(f'[epoch: {epoch + 1}, {i + 1:5d}], loss: {running_loss / 2000:.3f}')
-    #         #     running_loss = 0.0
+            if i % 2000 == 1999:    # print every 2000 mini-batches
+                print(f'[epoch: {epoch + 1}, {i + 1:5d}], loss: {running_loss / 2000:.3f}')
+                running_loss = 0.0
 
-    # print('Finished Training')
+    print('Finished Training')
 
-    # # Save trained model
+    # Save trained model
     PATH = './cifar_net.pth'
-    # torch.save(net.state_dict(), PATH)
+    torch.save(net.state_dict(), PATH)
 
     # Test network on test data
     dataiter = iter(testloader)
