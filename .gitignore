@@ -2,3 +2,5 @@ venv
 SVM/models
 SVM/figures
 data
+*.pyc
+*.pyo
