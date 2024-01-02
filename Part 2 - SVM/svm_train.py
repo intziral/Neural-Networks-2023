@@ -19,8 +19,8 @@ y_train, y_test = y_train.flatten(), y_test.flatten()
 print('Train: X=%s, y=%s' % (X_train.shape, y_train.shape))
 print('Test: X=%s, y=%s' % (X_test.shape, y_test.shape))
 
-if os.path.isfile('SVM/models/train_pca.pkl'):
-    with open('SVM/models/train_pca.pkl', 'rb') as f:
+if os.path.isfile('./models/train_pca.pkl'):
+    with open('./models/train_pca.pkl', 'rb') as f:
         X_pca = pickle.load(f)
 
 else:
@@ -29,7 +29,7 @@ else:
     X_pca.fit(X_train)
     print(X_pca.explained_variance_ratio_)
     # save pca
-    with open('SVM/models/train_pca.pkl','wb') as f:
+    with open('./models/train_pca.pkl','wb') as f:
             pickle.dump(X_pca, f)
 
 # show example images before and after pca
@@ -60,5 +60,5 @@ models = [clf.fit(X_train_pca, y_train) for clf in models]
 
 # save models
 for i, model in enumerate(models):
-    with open(f'SVM/models/model{i+1}.pkl','wb') as f:
+    with open(f'./models/model{i+1}.pkl','wb') as f:
         pickle.dump(model, f)

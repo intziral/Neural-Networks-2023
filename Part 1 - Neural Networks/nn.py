@@ -17,7 +17,7 @@ if __name__ == '__main__':
      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
     batch_size = 4
-    epoch_num = 1
+    epoch_num = 50
 
     trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)
     print("Training set has " + str(len(trainset)) + " samples.")
