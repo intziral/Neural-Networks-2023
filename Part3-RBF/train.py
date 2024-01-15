@@ -40,10 +40,9 @@ def main():
         transforms.ToTensor(),
         transforms.Lambda(lambda x: x.unsqueeze(0)),
         transforms.Lambda(lambda x: x.numpy().reshape(-1, 3072)), # Flatten
-        # transforms.Lambda(lambda x: pca.transform(x)),
+        transforms.Lambda(lambda x: pca.transform(x)),
         transforms.ToTensor(),
         transforms.Lambda(lambda x: x.squeeze()),
-        # transforms.Lambda(lambda x: (x-mn)/(mx-mn)),
     ])
 
     train_dataset = datasets.CIFAR10(root='./data', train=True, download=True, transform=transform)

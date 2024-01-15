@@ -26,9 +26,8 @@ class Conv(nn.Module):
         super().__init__()
         self.block1 = Block(3, 32)
         self.block2 = Block(32, 32)
-        self.block3 = Block(32, 64)
         self.pool = nn.AdaptiveAvgPool2d((1, 1))
-        self.linear1 = nn.Linear(64, 128)
+        self.linear1 = nn.Linear(32, 128)
         self.norm1 = nn.BatchNorm1d(128)
         # output layer
         self.linear2 = nn.Linear(128, 10)
@@ -36,7 +35,6 @@ class Conv(nn.Module):
     def forward(self, x):
         x = self.block1(x)
         x = self.block2(x)
-        x = self.block3(x)
         x = self.pool(x).squeeze(-1).squeeze(-1)
         x = self.linear1(x)
         x = self.norm1(x)

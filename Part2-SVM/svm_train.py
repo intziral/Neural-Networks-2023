@@ -5,6 +5,7 @@ from sklearn import svm
 from sklearn.decomposition import PCA
 import os
 import pickle
+import time
 
 # load dataset
 (X_train, y_train), (X_test, y_test) = cifar10.load_data()
@@ -19,8 +20,8 @@ y_train, y_test = y_train.flatten(), y_test.flatten()
 print('Train: X=%s, y=%s' % (X_train.shape, y_train.shape))
 print('Test: X=%s, y=%s' % (X_test.shape, y_test.shape))
 
-PATH = 'PART 2 - SVM/models/train_pca.pkl'
-if os.path.isfile():
+PATH = 'Part2-SVM/models/train_pca.pkl'
+if os.path.isfile(PATH):
     with open(PATH, 'rb') as f:
         X_pca = pickle.load(f)
 
@@ -47,17 +48,30 @@ plt.show()
 # transform input
 X_train_pca = X_pca.transform(X_train)
 
-models = [
+models = (
     svm.LinearSVC(dual="auto"),
     svm.SVC(kernel="linear"),
     svm.SVC(kernel="rbf", gamma=0.7),
     svm.SVC(kernel="rbf", gamma="auto"),
     svm.SVC(kernel="poly", degree=3, gamma="auto"),
-    
-]
+)
+
+train_times = np.empty((len(models)))
 
 # train models
-models = [clf.fit(X_train_pca, y_train) for clf in models]
+for m, clf in enumerate(models):
+
+    # Training the netowrk
+    start_time = time.time()
+    print(f"Starting Training Model {m+1} ...")
+    
+    clf.fit(X_train_pca, y_train)
+
+    training_time = (time.time() - start_time) / 60
+    print(f"\nTraining Time: {training_time:.2f} minutes")
+
+    train_times[m] = training_time
+
 
 # save models
 for i, model in enumerate(models):
